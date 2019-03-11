@@ -2,4 +2,4 @@
 
 docker build -t tanyard/im:clr .
 #docker login
-#docker push tanyard/im:clr
+docker push tanyard/im:clr
