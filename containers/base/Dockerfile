@@ -43,6 +43,11 @@ RUN mkdir -p /work/ && cd /work/ && wget https://download.open-mpi.org/release/o
     cd ..  && \
     rm -rf openmpi-4.0.0
 
+
+RUN R -e 'install.packages("BiocManager",repos = "http://cran.us.r-project.org")'
+
+RUN R -e 'BiocManager::install("netbenchmark", version = "3.8")'
+
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin
 ENV MPI_C_COMPILER /usr/local/bin/mpicc
