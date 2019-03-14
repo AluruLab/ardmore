@@ -1,0 +1,2 @@
+FROM tanyard/im:base
+
