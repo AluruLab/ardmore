@@ -1,0 +1,14 @@
+file name format - <name><n1>X<n2> 
+
+name
+____
+gnw* --> without noise
+gnwn* --> with 20% local normal noise and 10% global lognormal noise
+
+n1
+____
+number of samples 250,500,..,1750,2000
+
+n2
+____
+number of genes 250,500,..,1750,2000
