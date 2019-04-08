@@ -17,7 +17,7 @@ module load singularity-3.0
 
 mkdir -p wgcna/output
 
-# Rscript --vanilla run_wgcna.R <data file> <number of cores>
+# Rscript --vanilla run_wgcna.R <data file> <output file> <number of cores>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/wgcna/im_wgcna.sif \
 	Rscript --vanilla $PWD/wgcna/run_wgcna.R \
