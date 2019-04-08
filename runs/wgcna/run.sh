@@ -8,17 +8,21 @@
 date
 pwd
 
-ngenes=$(tail -n +2 $datafile | wc -l)
-nexpts=$(head -n 1 $datafile | wc -w)
-((nexpts++))
+nexpts=$(tail -n +2 $datafile | wc -l)
+ngenes=$(head -n 1 $datafile | wc -w)
+echo "Number of genes : $ngenes"
+echo "Number of expts : $nexpts" 
 
-cd $SLURM_SUBMIT_DIR/wgcna
 module load singularity-3.0
 
+mkdir -p wgcna/output
+
 # Rscript --vanilla run_wgcna.R <data file> <number of cores>
-currenttime=$(date "+%Y/%m/%d-%H:%M:%S")
-mkdir -p output
-singularity exec im_wgcna.sif Rscript --vanilla run_wgcna.R $datafile output/${ngenes}.${nexpts}.${currenttime} 64
+currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
+singularity exec $PWD/wgcna/im_wgcna.sif \
+	Rscript --vanilla $PWD/wgcna/run_wgcna.R \
+	$PWD/$datafile $PWD/wgcna/output/${ngenes}.${nexpts}-${currenttime} \
+	64
 
 echo
 date
