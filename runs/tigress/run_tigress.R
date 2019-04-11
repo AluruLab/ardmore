@@ -19,7 +19,5 @@ library("parallel")
 args = commandArgs(trailingOnly=TRUE)
 X <- read.table(args[1], header=TRUE, sep=" ", row.names=1)
 Y <- data.matrix(X, rownames.force=TRUE)
-output <- tigress(Y, verb=TRUE, usemulticore=TRUE)
-write.table(output, "tigress.out")
-
-
+output <- tigress(Y, verb=TRUE, usemulticore=args[3])
+write.table(output, args[2])

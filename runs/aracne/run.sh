@@ -1,3 +1,36 @@
 #!/bin/bash
+#SBATCH --job-name=aracne
+#SBATCH --output=./aracne/logs/log_%J.out
+#SBATCH --error=./aracne/logs/err_%J.err
+#SBATCH --ntasks=64
+#SBATCH --time=24:00:00
 
-sbatch --export=infile='',genes='' slurm.sh
+date
+pwd
+
+ngenes=$(tail -n +2 $datafile | wc -l)
+nexpts=$(head -n 1 $datafile | wc -w)
+((nexpts--))
+echo "Number of genes : $ngenes"
+echo "Number of expts : $nexpts"
+
+module load singularity-3.0
+
+mkdir -p aracne/output
+
+singularity exec \
+	$PWD/aracne/im_aracne.sif \
+	java -Xmx5G -jar /usr/local/bin/aracne.jar \
+	-e $datafile -o $PWD/aracne/output \
+	--tfs <(tail -n +2 $PWD/$datafile | cut -d$'\t' -f 1) \
+	--pvalue 1E-8 --seed 1 --calculateThreshold
+
+singularity exec \
+	$PWD/aracne/im_aracne.sif \
+	java -Xmx5G -jar /usr/local/bin/aracne.jar \
+	-e $datafile -o $PWD/aracne/output \
+	--tfs <(tail -n +2 $PWD/$datafile | cut -d$'\t' -f 1) \
+	--pvalue 1E-8 --seed 1 --threads 64
+
+echo
+date

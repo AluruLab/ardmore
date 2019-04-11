@@ -9,4 +9,4 @@ RUN mkdir -p /work/ && \
 
 RUN R -e 'install.packages("devtools",repos = "http://cran.us.r-project.org")'
 
-RUN R -e 'library(devtools); install_github("jpvert/tigress")'
+RUN R -e 'library(devtools); install_github("shruti1995/tigress")'
