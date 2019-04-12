@@ -10,7 +10,7 @@ do
         formattedname=${f##*/}
         /bin/bash $m/format.sh -f $f
         mkdir -p $m/logs
-		if [ ! -f "$m/im_$m" ]
+		if [ ! -f "$m/im_$m.sif" ]
 		then
 			cd $m
 			singularity pull docker://tanyard/im:$m

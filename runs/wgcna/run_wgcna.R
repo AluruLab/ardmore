@@ -17,9 +17,13 @@ softPower = sft$powerEstimate
 adj = adjacency(df, type = "unsigned", power = softPower)
 
 #Pick hard threshold from weighted similarity matrix
-ht = pickHardThreshold.fromSimilarity(adj)
+ht = pickHardThreshold.fromSimilarity(adj, nBreaks=5)
 hardcut = ht$cutEstimate
+
+# Final adjacency matrix
+hadj = signumAdjacencyFunction(adj, hardcut)
 
 write.table(adj, file=outfile)
 cat("Hard cut estimate : ", hardcut)
-write(hardcut, file=outfile, append=TRUE)
+write.table(hadj, file=paste(outfile, "adjacency", sep="_"))
+
