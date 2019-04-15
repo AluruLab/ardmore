@@ -6,6 +6,9 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib
 ENV MPI_C /usr/local/bin/mpicc
 ENV MPI_CXX /usr/local/bin/mpicxx
 
+RUN apk add --update \
+    openssh \
+    openssh-server
 
 RUN sed -i \
   '/malloc_usable_size/a \\nstruct mallinfo {\n  int arena;\n  int ordblks; \n  int smblks;\n  int hblks;\n  int hblkhd;\n  int usmblks;\n  int fsmblks;  \n  int uordblks;\n int fordblks; \n int keepcost;};' \ 
