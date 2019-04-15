@@ -2,7 +2,7 @@
 #SBATCH --job-name=wgcna
 #SBATCH --output=./wgcna/logs/log_%J.out
 #SBATCH --error=./wgcna/logs/err_%J.err
-#SBATCH --ntasks=64
+#SBATCH --ntasks=32
 #SBATCH --time=24:00:00
 
 date
@@ -22,7 +22,7 @@ currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/wgcna/im_wgcna.sif \
 	Rscript --vanilla $PWD/wgcna/run_wgcna.R \
 	$PWD/$datafile $PWD/wgcna/output/${ngenes}.${nexpts}-${currenttime} \
-	64
+	32
 
 echo
 date
