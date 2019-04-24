@@ -27,7 +27,7 @@ fi
 
 ngenes=$(head -n1 $filename | wc -w)
 nsamples=$(tail -n +2 $filename | wc -l)
-mkdir -p aracne/data
+mkdir -p clr/data
 formattedname=${filename##*/}
 awk '
 { 
@@ -44,4 +44,4 @@ END {
         }
         print str
     }
-}' <(tail -n +2 $filename | cut -d ' ' -f 2-) >aracne/data/format.$formattedname
+}' <(tail -n +2 $filename | cut -d ' ' -f 2-) >clr/data/format.$formattedname

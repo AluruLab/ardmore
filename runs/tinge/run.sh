@@ -15,6 +15,7 @@ echo "Number of genes : $ngenes"
 echo "Number of expts : $nexpts"
 
 module load singularity-3.0
+module load gcc openmpi-1.10.2
 
 mkdir -p tinge/output
 

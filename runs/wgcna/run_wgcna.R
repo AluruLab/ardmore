@@ -13,17 +13,17 @@ df <- read.csv(datafile, sep = "")
 powers = c(c(1:10), seq(from = 12, to=20, by=2))
 sft = pickSoftThreshold(df, dataIsExpr = TRUE, powerVector = powers, corFnc = cor, corOptions = list(use = 'p'), networkType = "unsigned")
 softPower = sft$powerEstimate
-
-adj = adjacency(df, type = "unsigned", power = softPower)
+cat("Soft power estimate : ", softPower)
+adj = adjacency(df, type = "unsigned", power=softPower)
 
 #Pick hard threshold from weighted similarity matrix
-ht = pickHardThreshold.fromSimilarity(adj, nBreaks=5)
-hardcut = ht$cutEstimate
+#ht = pickHardThreshold.fromSimilarity(adj, nBreaks=5)
+#hardcut = ht$cutEstimate
 
 # Final adjacency matrix
-hadj = signumAdjacencyFunction(adj, hardcut)
+#hadj = signumAdjacencyFunction(adj, hardcut)
 
 write.table(adj, file=outfile)
-cat("Hard cut estimate : ", hardcut)
-write.table(hadj, file=paste(outfile, "adjacency", sep="_"))
+#cat("Hard cut estimate : ", hardcut)
+#write.table(hadj, file=paste(outfile, "adjacency", sep="_"))
 

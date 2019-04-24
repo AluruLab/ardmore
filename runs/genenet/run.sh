@@ -8,7 +8,7 @@
 date
 pwd
 
-nexpts=$(tail -n +2 $datafile | wc -l)AAA
+nexpts=$(tail -n +2 $datafile | wc -l)
 ngenes=$(head -n 1 $datafile | wc -w)
 echo "Number of genes : $ngenes"
 echo "Number of expts : $nexpts" 

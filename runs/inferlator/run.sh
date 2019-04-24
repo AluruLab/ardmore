@@ -28,5 +28,6 @@ singularity exec \
     Rscript /usr/local/bin/inferlator.R \
     config.R
 
+head -n -4 $PWD/inferlator/config.R > $PWD/inferlator/temp && mv $PWD/inferlator/temp $PWD/inferlator/config.R
 echo
 date
