@@ -1,9 +1,8 @@
-FROM tanyard/im:base
+FROM tanyard/im:ubuntubase
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 
-RUN apk add --update \
-    bash \
+RUN apt-get install -y \
     maven \
     && rm -rf /var/cache/apk/*
 
