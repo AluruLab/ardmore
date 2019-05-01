@@ -1,40 +1,26 @@
-FROM alpine:3.9
+FROM ubuntu:16.04
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-
-# python, R, gcc
-RUN apk add --update \
-    linux-headers \
-    python3 \
-    python3-dev \
-    R \
-    R-dev \
-    R-doc \
-    build-base \
-    automake \
-    autoconf \
-    m4 \
+RUN apt-get update
+RUN apt-get install -y apt-utils \
+    build-essential \
+    curl wget \
+    cmake gcc \
+    unzip vim \
+    libopenblas-dev \
+    libcurl4-openssl-dev \
     git \
-    libgit2 \
-    libgit2-dev \
-    libuv \
-    libuv-dev \
-    openjdk8 \
-    openjdk8-jre \
-    apache-ant \
-    cmake \
-    && rm -rf /var/cache/apk/*
+    automake autoconf \
+    software-properties-common
+RUN apt-get clean && apt-get purge
 
-# make sure pip is available
-RUN python3 -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip3 install --upgrade pip setuptools && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-    rm -r /root/.cache
+RUN apt-get install -y apt-transport-https
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/' && \
+    apt-get update && \
+    apt-get install -y r-base r-base-dev
 
-# install open mpi 
-RUN mkdir -p /work/ && cd /work/ && wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.gz && \
+RUN mkdir -p /work/ && cd /work && \
+    wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.gz && \
     gzip -dc openmpi-4.0.0.tar.gz | tar -x  && \
     cd openmpi-4.0.0  && \
     ./configure  && \
@@ -43,12 +29,25 @@ RUN mkdir -p /work/ && cd /work/ && wget https://download.open-mpi.org/release/o
     cd ..  && \
     rm -rf openmpi-4.0.0
 
-
 RUN R -e 'install.packages("BiocManager",repos = "http://cran.us.r-project.org")'
 
-RUN R -e 'BiocManager::install("netbenchmark", version = "3.8")'
+ENV MPI_C_COMPILER /usr/local/bin/mpicc
+ENV MPI_CXX_COMPILER /usr/local/bin/mpicxx
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
-ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin
+RUN apt-get install -y time
+RUN apt-get install -y libcurl4-gnutls-dev \
+    libxml2-dev \
+    libssl-dev
+
+RUN apt-get install -y default-jdk \
+    ant 
+
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.6 \
+    python3-pip
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk/jre
+ENV PATH $PATH:/usr/lib/jvm/java-8-openjdk/jre/bin
 ENV MPI_C_COMPILER /usr/local/bin/mpicc
 ENV MPI_CXX_COMPILER /usr/local/bin/mpicxx
