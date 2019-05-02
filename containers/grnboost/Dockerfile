@@ -7,7 +7,14 @@ RUN apt-get install -y \
     maven \
     && rm -rf /var/cache/apk/*
 
-RUN ln -sfn /usr/bin/python3.6 /usr/bin/python
+
+RUN apt-get install -y libstdc++6 && \
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y dist-upgrade
+
+RUN ln -sfn /usr/bin/python3.5 /usr/bin/python
 
 RUN mkdir -p /m2/repo/
 
