@@ -21,7 +21,7 @@ mkdir -p genie3/output
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec \
     $PWD/genie3/im_genie3.sif \
-    Rscript --vanilla $PWD/genie3/run_genie3.R \
+    time Rscript --vanilla $PWD/genie3/run_genie3.R \
     $PWD/$datafile $PWD/genie3/output/${ngenes}.${nexpts}-$currenttime \
     64
 

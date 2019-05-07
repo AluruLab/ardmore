@@ -2,14 +2,14 @@
 #SBATCH --job-name=clr
 #SBATCH --output=./clr/logs/log_%J.out
 #SBATCH --error=./clr/logs/err_%J.err
-#SBATCH --ntasks=64
-#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --time=72:00:00
 
 date
 pwd
 
-ngenes=$(wc -l $datafile)
-nexpts=$(head -n 1 $datafile | wc -w)
+ngenes=$(wc -l < $datafile)
+nexpts=$(( $(head -n 1 $datafile | tr -cd , | wc -c)+1 ))
 echo "Number of genes : $ngenes"
 echo "Number of expts : $nexpts"
 
@@ -20,8 +20,8 @@ currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 # requires genesXexpts without any headers or row numbers
 singularity exec \
     $PWD/clr/im_clr.sif \
-    /usr/local/bin/clr --data $datafile \
-    --map $PWD/clr/output/${ngenes}.${nexpts}-$currenttime 
+    time /usr/local/bin/clr --data $datafile \
+    --map $PWD/clr/output/${ngenes}.${nexpts}-$currenttime \
     --bins 10 --spline 3
 
 echo

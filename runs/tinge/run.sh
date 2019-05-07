@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #SBATCH --job-name=tinge
 #SBATCH --output=./tinge/logs/log_%J.out
 #SBATCH --error=./tinge/logs/err_%J.err
@@ -15,7 +15,6 @@ echo "Number of genes : $ngenes"
 echo "Number of expts : $nexpts"
 
 module load singularity-3.0
-module load gcc openmpi-1.10.2
 
 mkdir -p tinge/output
 
@@ -24,7 +23,7 @@ singularity exec \
     $PWD/tinge/im_tinge.sif \
     mpiexec -np 64 /usr/local/bin/tinge-mi \
     -i $PWD/$datafile \
-    -o $PWD/tinge/output/${ngenes}.${nexpts}-${currenttime}
+    -o $PWD/tinge/output/${ngenes}.${nexpts}-${currenttime} \
     -p 0.001 -e 0.1
 
 echo

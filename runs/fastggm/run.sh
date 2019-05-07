@@ -20,7 +20,7 @@ mkdir -p fastggm/output
 # Rscript --vanilla run_fastggm.R <data file> <output file> <number of cores>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/fastggm/im_fastggm.sif \
-	Rscript --vanilla $PWD/fastggm/run_fastggm.R \
+	time Rscript --vanilla $PWD/fastggm/run_fastggm.R \
 	$PWD/$datafile $PWD/fastggm/output/${ngenes}.${nexpts}-${currenttime} \
 	64
 

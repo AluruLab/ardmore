@@ -2,8 +2,8 @@
 #SBATCH --job-name=mrnet
 #SBATCH --output=./mrnet/logs/log_%J.out
 #SBATCH --error=./mrnet/logs/err_%J.err
-#SBATCH --ntasks=64
-#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --time=72:00:00
 
 date
 pwd
@@ -20,7 +20,7 @@ mkdir -p mrnet/output
 # Rscript --vanilla run_mrnet.R <data file> <output file>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/mrnet/im_mrnet.sif \
-	Rscript --vanilla $PWD/mrnet/run_mrnet.R \
+	time Rscript --vanilla $PWD/mrnet/run_mrnet.R \
 	$PWD/$datafile $PWD/mrnet/output/${ngenes}.${nexpts}-${currenttime}
 
 echo

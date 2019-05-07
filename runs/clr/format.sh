@@ -40,7 +40,7 @@ END {
     for(j=1; j<=p; j++) {
         str=a[1,j]
         for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
+            str=str","a[i,j];
         }
         print str
     }

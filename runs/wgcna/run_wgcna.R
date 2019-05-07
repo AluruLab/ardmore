@@ -5,9 +5,12 @@ datafile <- args[1]
 outfile <- args[2]
 threads <- as.numeric(args[3])
 options(stringsAsFactors = FALSE)
-enableWGCNAThreads(threads)
+max_allowed = enableWGCNAThreads(threads)
+cat("Maximum number of threads allowed : ", max_allowed)
+cat("Running wgcna on : ",WGCNAnThreads()) 
 # requires samples X genes
 df <- read.csv(datafile, sep = "")
+cat("Running wgcna on #cores : ", as.numeric(args[3]))
 
 # TODO : pick soft threshold
 powers = c(c(1:10), seq(from = 12, to=20, by=2))

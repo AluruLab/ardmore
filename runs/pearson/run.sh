@@ -2,8 +2,8 @@
 #SBATCH --job-name=pearson
 #SBATCH --output=./pearson/logs/log_%J.out
 #SBATCH --error=./pearson/logs/err_%J.err
-#SBATCH --ntasks=64
-#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --time=72:00:00
 
 date
 pwd
@@ -20,7 +20,7 @@ mkdir -p pearson/output
 # Rscript --vanilla run_pearson.R <data file> <output file> <number of cores>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/pearson/im_pearson.sif \
-	Rscript --vanilla $PWD/pearson/run_pearson.R \
+	time Rscript --vanilla $PWD/pearson/run_pearson.R \
 	$PWD/$datafile $PWD/pearson/output/${ngenes}.${nexpts}-${currenttime} \
 
 echo

@@ -20,7 +20,7 @@ mkdir -p tigress/output
 # Rscript --vanilla run_tigress.R <data file> <output file> <number of cores>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/tigress/im_tigress.sif \
-	Rscript --vanilla $PWD/tigress/run_tigress.R \
+	time Rscript --vanilla $PWD/tigress/run_tigress.R \
 	$PWD/$datafile $PWD/tigress/output/${ngenes}.${nexpts}-${currenttime} \
 	64
 

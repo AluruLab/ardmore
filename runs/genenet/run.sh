@@ -2,8 +2,8 @@
 #SBATCH --job-name=genenet
 #SBATCH --output=./genenet/logs/log_%J.out
 #SBATCH --error=./genenet/logs/err_%J.err
-#SBATCH --ntasks=64
-#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --time=72:00:00
 
 date
 pwd
@@ -20,7 +20,7 @@ mkdir -p genenet/output
 # Rscript --vanilla run_genenet.R <data file> <output file>
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
 singularity exec $PWD/genenet/im_genenet.sif \
-	Rscript --vanilla $PWD/genenet/run_genenet.R \
+	time Rscript --vanilla $PWD/genenet/run_genenet.R \
 	$PWD/$datafile $PWD/genenet/output/${ngenes}.${nexpts}-${currenttime}
 
 echo
