@@ -45,7 +45,8 @@ END {
     }
 }' <(tail -n +2 $filename | cut -d ' ' -f 2-) >grnboost/data/temp
 
-paste <(head -n1 $filename | sed 's/"//g' | tr ' ' '\n') grnboost/data/temp >aracne/data/temp2
+paste <(head -n1 $filename | sed 's/"//g' | tr ' ' '\n') grnboost/data/temp >grnboost/data/temp2
 formattedname=${filename##*/}
-{ echo -n -e "GENE\t"; for ((i=1;i<$nsamples;i++)); do echo -n -e "S$i\t"; done; echo "S$nsamples"; cat grnboost/data/temp2; } >aracne/data/format.$formattedname
+#{ echo -n -e "GENE\t"; for ((i=1;i<$nsamples;i++)); do echo -n -e "S$i\t"; done; echo "S$nsamples"; cat grnboost/data/temp2; } >grnboost/data/format.$formattedname
+{ cat grnboost/data/temp2; } >grnboost/data/format.$formattedname
 rm grnboost/data/{temp,temp2}
