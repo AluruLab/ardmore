@@ -16,18 +16,22 @@ echo "Number of expts : $nexpts"
 module load singularity-3.0
 
 mkdir -p inferlator/output
+mkdir -p inferlator/configs
 currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
+outputdir=inferlator/output/${currenttime}
+configfile=inferlator/configs/${ngenes}.${nexpts}_config.R
+mkdir $outputdir
 
-echo "PARS\$input.dir = '$PWD/inferlator/data'
+echo "PARS\$cores = 64
+PARS\$input.dir = '$PWD'
 PARS\$exp.mat.file = '$datafile'
-PARS\$tf.names.file = '$datafile.genes'
-PARS\$save.to.dir = '$PWD/inferlator/output'" >> $PWD/inferlator/config.R
+PARS\$tf.names.file = '${datafile}.genes'
+PARS\$save.to.dir = '$PWD/${outputdir}'" >> $PWD/${configfile}
 
 singularity exec \
     $PWD/inferlator/im_inferlator.sif \
-    Rscript /usr/local/bin/inferlator.R \
-    config.R
+    time Rscript /usr/local/bin/inferelator.R \
+    $PWD/${configfile}
 
-head -n -4 $PWD/inferlator/config.R > $PWD/inferlator/temp && mv $PWD/inferlator/temp $PWD/inferlator/config.R
 echo
 date
