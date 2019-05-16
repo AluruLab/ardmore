@@ -18,7 +18,7 @@ echo "Running aracne on #cores : 64"
 module load singularity-3.0
 
 mkdir -p aracne/output
-outputdir=aracne/output/$(date "+%Y.%m.%d-%H.%M.%S")
+outputdir=aracne/output/${ngenes}.${nexpts}-$(date "+%Y.%m.%d-%H.%M.%S")
 mkdir $outputdir
 
 singularity exec \
