@@ -2,7 +2,7 @@ import numpy, os, errno
 import glob
 import re
 import numpy as np
-from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, average_precision_score
 import pandas as pd
 import matplotlib
 matplotlib.use('agg')
@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import re
 import argparse
 
+PRINT_ORDER_SXG =["2000X250", "2000X500", "2000X750", "2000X1000", "2000X1250", "2000X1500", "2000X1750", "2000X2000", "1750X2000", "1500X2000", "1250X2000", "1000X2000", "750X2000", "500X2000", "250X2000"]
 TRUE_NETWORK_FILE = '../data/yeast/gnw2000_truenet'
 TRUE_NETWORK_GENES = '../data/yeast/genes'
 
@@ -101,9 +102,12 @@ def gen_auroc(genes_file, true_net_file, network_files):
     tnet = load_mat_network(true_net_file, wt_attr_name="twt")
     print("Loaded ", true_net_file, "with", tnet.shape[0],
           "edges and", len(rgenes), "genes.")
-    #for filename in glob.glob("../runs/grnboost/output/*.tsv"): # os.listdir('../runs/grnboost/output'):
     print("Input Files : ", " ".join(network_files))
-    print("GENES", "SAMPLES", "AUROC")
+    #print("GENES", "SAMPLES", "AUROC", "AVGPR")
+    genes = []
+    samples = []
+    auroclst  = []
+    auprlst = []
     for filename in network_files: 
         bname = os.path.basename(filename)
         mx = re.search('([0-9]+)X([0-9]+)-', bname)
@@ -116,24 +120,46 @@ def gen_auroc(genes_file, true_net_file, network_files):
         rnet = load_tsv_network(filename, wt_attr_name="pwt") 
         rnet = rnet.drop_duplicates(subset=['source','target'])
         jnnet = pd.merge(stnet, rnet, on=['source','target'], how='left')
-        #print(ngenes, stnet.shape, rnet.shape, jnnet.shape, 
-        #      sum(jnnet.twt.isna()), sum(jnnet.pwt.isna()))
         jnnet.fillna(0, inplace=True)
         true = jnnet.twt 
         pred = jnnet.pwt 
         fpr, tpr, thresholds = roc_curve(true, pred)
+        precision, recall, _ = precision_recall_curve(true, pred)
         auroc = roc_auc_score(true, pred)
+        avgpr = average_precision_score(true, pred)
         
         fig = plt.figure()
+        plt.subplot(1, 2, 1)
         plt.plot(fpr, tpr, color='darkorange')
         plt.plot([0,1], [0,1], color='navy', linestyle='--')
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
-        fig.savefig('grnboost/'+bname+'.png')
+
+
+        plt.subplot(1, 2, 2)
+        plt.plot(recall, precision, color='darkorange')
+        plt.plot([0, 1], [1, 0], color='navy', linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
+        fig.savefig('grnboost/gXs-'+bname.split('-')[0]+'.png')
     
-        print(ngenes, nsamples, str(auroc))
+        #print(ngenes, nsamples, str(auroc), str(avgpr))
+        genes.append(ngenes)
+        samples.append(nsamples)
+        auroclst.append(auroc)
+        auprlst.append(avgpr)
+    #rstdf = pd.DataFrame({"GENES" : genes, "SAMPLES": samples, 
+    #                      "AUROC": auroclst, "AUPR": auprlst})
+    rstdf = {str(b)+"X"+str(a) : (c,d) for a,b,c,d in zip(genes, samples, auroclst, auprlst)}
+    print(rstdf)
+    print("\t".join(["SAMPLESXGENES"] + PRINT_ORDER_SXG))
+    print("\t".join(["AUROC"] + [str(rstdf[x][0]) if x in rstdf else "NA" for x in PRINT_ORDER_SXG]))
+    print("\t".join(["AUPR"] + [str(rstdf[x][1]) if x in rstdf else "NA" for x in PRINT_ORDER_SXG]))
+    return rstdf
 
 def main():
     PROG_DESC = """
