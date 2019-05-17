@@ -17,8 +17,7 @@ module load singularity-3.0
 
 mkdir -p inferlator/output
 mkdir -p inferlator/configs
-currenttime=$(date "+%Y.%m.%d-%H.%M.%S")
-outputdir=inferlator/output/${currenttime}
+outputdir=inferlator/output/${ngenes}.${nexpts}-$(date "+%Y.%m.%d-%H.%M.%S")
 configfile=inferlator/configs/${ngenes}.${nexpts}_config.R
 mkdir $outputdir
 
@@ -26,7 +25,10 @@ echo "PARS\$cores = 64
 PARS\$input.dir = '$PWD'
 PARS\$exp.mat.file = '$datafile'
 PARS\$tf.names.file = '${datafile}.genes'
-PARS\$save.to.dir = '$PWD/${outputdir}'" >> $PWD/${configfile}
+PARS\$save.to.dir = '$PWD/${outputdir}'
+PARS\$output.summary = TRUE
+PARS\$output.report = TRUE
+PARS\$output.tf.plots = TRUE" >> $PWD/${configfile}
 
 singularity exec \
     $PWD/inferlator/im_inferlator.sif \
