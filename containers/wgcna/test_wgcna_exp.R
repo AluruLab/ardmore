@@ -5,7 +5,7 @@ run.wgcna <- function(exp.fname, out.fname, softPower=1){
    rownames(exp_tab) <- exp_tab[,1]
    dt <- dim(exp_tab)
    exp_tab <- exp_tab[,3:dt[2]]
-   #exp_tab <- t(exp_tab)
+   exp_tab <- t(exp_tab)
    # computed.cor <- cor(exp_tab)
    # write.table(computed.cor, out.fname, sep = "\t")
    sth = pickSoftThreshold(exp_tab, TRUE, moreNetworkConcepts=TRUE)
@@ -14,8 +14,10 @@ run.wgcna <- function(exp.fname, out.fname, softPower=1){
    print(ftx)
    adjm = adjacency(exp_tab,type = "unsigned", power = softPower)
    # print(dim(adjm))
-   TOM = TOMsimilarityFromExpr(adjm, power=softPower, TOMType="unsigned", suppressTOMForZeroAdjacencies=T)
-   write.table(TOM, file=out.fname)
+   #TOM = TOMsimilarity(adjm, TOMType="unsigned", suppressTOMForZeroAdjacencies=TRUE)
+   #rownames(TOM) = rownames(adjm)
+   #colnames(TOM) = colnames(adjm)
+   write.table(adjm, file=out.fname)
 }
 
 args = commandArgs(trailingOnly=TRUE)

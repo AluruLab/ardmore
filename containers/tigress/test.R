@@ -16,7 +16,7 @@ library("parallel")
 #nstepsLARS = 20
 #edgepred <- tigress(t(ecoli$exp), tflist=tfnames, targetlist=targetnames, nstepsLARS = nstepsLARS)
 
-X <- read.table("data/toy-expXgenes.tsv", header=TRUE, sep=" ", row.names=1)
+X <- read.table("../../data/toy/toy-expXgenes.tsv", header=TRUE, sep=" ", row.names=1)
 Y <- data.matrix(X, rownames.force=TRUE)
 output <- tigress(Y, verb=TRUE, usemulticore=TRUE)
 write.table(output, "tigress.out")
