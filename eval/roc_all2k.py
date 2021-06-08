@@ -9,7 +9,7 @@ matplotlib.rcParams['font.sans-serif'] = "Myriad Pro"
 
 
 DATA_DIR = '../data/revnet/'
-TRUE_NET = '../data/scerevisiae/gnw2000_truenet'
+TRUE_NET = '../data/ref_yeast/gnw2000_truenet'
 PR_OUTPUT_FILE = 'Simulations-PR-2Kx2K.'
 ROC_OUTPUT_FILE = 'Simulations-ROC-2Kx2K.'
 ROCPR_OUTPUT_FILE = 'Simulations-ROC-PR-2Kx2K.'
