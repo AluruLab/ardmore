@@ -1,0 +1,117 @@
+{
+  "DATA_DIR": "../data/revnet/",
+  "TRUE_NET": "../data/scerevisiae/gnw2000_truenet",
+  "AUPR_OUT_FILE":"pr.full.2k.csv",
+  "AUROC_OUT_FILE":"roc.full.2k.csv",
+  "ROCPR_OUTPUT_FILE": "Simulations-ROC-PR-2Kx2K",
+  "PR_OUTPUT_FILE": "Simulations-PR-2Kx2K",
+  "ROC_OUTPUT_FILE": "Simulations-ROC-2Kx2K",
+  "FIG_SIZE": "(8, 6)",
+  "SUB_FIG_SIZE":  "(15, 6)",
+  "CN_COLORS": ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"],
+  "TAB_COLORS": [
+    "tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple",
+    "tab:brown", "tab:pink", "tab:gray", "tab:olive", "tab:cyan"
+    ],
+  "PLOT_COLOR_NAMES":[
+    "Maroon",
+    "Brown",
+    "Orange",
+    "Green",
+    "Purple",
+    "Navy",
+    "Olive",
+    "Blue",
+    "Red",
+    "Yellow",
+    "Grey"
+    ],
+  "PLOT_COLORS" : [
+    "#800000", 
+    "#9A6324",
+    "#f58231",
+    "#3cb44b",
+    "#911eb4",
+    "#000075",
+    "#808000",
+    "#4363d8",
+    "#e6194B",
+    "#ffe119",
+    "#a9a9a9"
+   ],
+  "REVNET_METHODS_X":  [
+      "aracne",
+      "clr",
+      "fastggm",
+      "genenet",
+      "genie3",
+      "grnboost",
+      "inferlator",
+      "mrnet",
+      "tigress",
+      "tinge",
+      "pcc"
+  ],
+  "REVNET_FILES": [
+      {
+        "file"   : "aracne/phnx-2000.2000-2020.11.23-06.32.21/nobootstrap_network.txt",
+        "label"  : "ARACNE-AP",
+        "method" : "aracne"
+      },
+      { 
+        "file"     : "clr/2000.2000-2019.05.05-13.42.52",
+        "label"    : "CLR",
+        "method"   : "clr"
+      },
+      {
+        "file" : "fastggm/2000.2000-2019.05.03-18.41.16",
+        "label" : "FastGGM",
+        "method" :  "fastggm"
+      },
+      {
+        "file" : "genenet/stats/2000.2000-2019.05.15-15.53.26_stats",
+        "method" : "genenet",
+        "label" : "GeneNet"
+      },
+      {
+          "file"  : "genie3/2000.2000-2019.05.06-17.02.21",
+          "label"  : "GENIE3",
+          "method" : "genie3"
+      },
+      {
+          "file" : "grnboost/2000X2000-2019.05.16-15.05.30.result.tsv",
+          "label" : "GRNBoost",
+          "method" : "grnboost"
+      },
+      {
+          "file" : "inferlator/2000.2000-2019.05.16-16.50.04/summary_frac_tp_0_perm_1--frac_fp_0_perm_1_1.tsv",
+          "label" : "Inferelator",
+          "method" : "inferlator"
+      },
+      {
+          "file" : "mrnet/2000.2000-2019.05.05-17.56.28",
+          "label" : "MRNET",
+          "method" : "mrnet"
+      },
+      {
+          "file" : "tigress/2000.2000-2019.05.06-15.59.22",
+          "label" : "TIGRESS",
+          "method": "tigress"
+      },
+      {
+          "file" : "tinge/phnx-2000.2000-full.weight.eda",
+          "label" : "TINGe",
+          "method" : "tinge"
+      },
+      {
+          "file" : "wgcna/2000.2000-2019.05.03-18.09.55",
+          "label" : "WGCNA",
+          "method": "wgcna"
+      },
+      {
+          "file" : "pearson/2000.2000-2019.05.03-17.33.01",
+          "label" :  "PCC",
+          "method" : "pcc"
+      }
+  ]
+}
