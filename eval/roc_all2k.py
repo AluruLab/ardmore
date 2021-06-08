@@ -1,10 +1,10 @@
 import sys
+import sklearn.metrics as skm
 import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
-import sklearn.metrics as skm
 matplotlib.rcParams['font.sans-serif'] = "Myriad Pro"
 
 
@@ -201,7 +201,7 @@ def load_tsv_network(eda_file: str, wt_attr_name: str = 'wt') -> pd.DataFrame:
     pandas DataFrame with three columns: 'source', 'target', wt_attr_name
 
     """
-    tmp_df = pd.read_csv(eda_file, sep='\t', header=None, 
+    tmp_df = pd.read_csv(eda_file, sep='\t', header=None,
                          names=['source', 'target', wt_attr_name])
     tmp_rcds = [(x, y, z) if x < y else (y, x, z) for x, y, z in tmp_df.to_dict('split')['data']]
     xdf = pd.DataFrame(tmp_rcds, columns=['source', 'target', wt_attr_name])
@@ -209,8 +209,8 @@ def load_tsv_network(eda_file: str, wt_attr_name: str = 'wt') -> pd.DataFrame:
 
 
 def read_genes(genes_file):
-    with open(genes_file) as f:
-        rgenes = f.readlines()
+    with open(genes_file) as ifx:
+        rgenes = ifx.readlines()
         return [x.strip() for x in rgenes]
 
 
@@ -355,7 +355,7 @@ def genie3_roc(true_complete_file, g3_fname, genes_list):
     pred_a = pd.DataFrame(min_pred/2, columns=true_a.columns, index=true_a.index).to_numpy()
     # print(pred_a[~np.eye(pred_a.shape[0], dtype=bool)].shape)
     # print(pred['weight'].values.shape)
-    pred_a[~np.eye(pred_a.shape[0], dtype=bool)] = pred['weight'].values
+    pred_a[~np.eye(pred_a.shape[0], dtype=bool)] = pred['weight'].values # pylint: disable=E1136  # pylint/issues/3139
     true_a = true_a.to_numpy()
     pred_a = np.fmax(np.transpose(pred_a), pred_a)
     true_a = get_lower_triangle(true_a) # true_a.values.flatten()
@@ -391,7 +391,7 @@ def grnboost_roc(true_complete_file, grn_fname, genes_list):
 
 def inferlator_old_roc(true_complete_file, infr_fname, genes_list, full_genes_list):
     true_complete = np.genfromtxt(true_complete_file, delimiter=' ',
-                                  skip_header=1, usecols=range(1,2001))
+                                  skip_header=1, usecols=range(1, 2001))
     genes_dct = {}
     genes_list = set(genes_list)
     for idx, gname in zip(range(len(full_genes_list)), full_genes_list):
@@ -488,9 +488,9 @@ def tinge_old_roc(true_complete_file, tinge_fname, genes_list, full_genes_list):
     row = []
     col = []
     pred = []
-    with open(filename) as f:
+    with open(filename) as ifx:
         num = 0
-        for line in f:
+        for line in ifx:
             if num >= 30:
                 terms = line.rstrip().split('\t')
                 row.extend([genes_dct[terms[0]] for i in range(int((len(terms)-1)/2))])
@@ -566,59 +566,59 @@ def plot_all_roc2k(true_edgesfx, net_genes, plt_colors):
     method_full = []
     fpr, tpr, _, _ = aracne_roc(true_edgesfx, REVNET_FILES['aracne'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[0], label='ARACNE-AP')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['ARACNE-AP' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['ARACNE-AP' for _ in tpr]
     fpr, tpr, _, _ = clr_roc(true_edgesfx, REVNET_FILES['clr'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[1], label='CLR')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['CLR' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['CLR' for _ in tpr]
     fpr, tpr, _, _ = fastggm_roc(true_edgesfx, REVNET_FILES['fastggm'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[2], label='FastGGM')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['FastGGM' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['FastGGM' for _ in tpr]
     fpr, tpr, _, _ = genenet_roc(true_edgesfx, REVNET_FILES['genenet'])
     plt.plot(fpr, tpr, color=plt_colors[3], label='GeneNet')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['GeneNet' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['GeneNet' for _ in tpr]
     fpr, tpr, _, _ = genie3_roc(true_edgesfx, REVNET_FILES['genie3'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[4], label='GENIE3')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['GENIE3' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['GENIE3' for _ in tpr]
     fpr, tpr, _, _ = grnboost_roc(true_edgesfx, REVNET_FILES['grnboost'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[5], label='GRNBoost')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['GRNBoost' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['GRNBoost' for _ in tpr]
     fpr, tpr, _, _ = inferlator_roc(true_edgesfx, REVNET_FILES['inferlator'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[6], label='Inferelator')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['Inferelator' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['Inferelator' for _ in tpr]
     fpr, tpr, _, _ = mrnet_roc(true_edgesfx, REVNET_FILES['mrnet'])
     plt.plot(fpr, tpr, color=plt_colors[7], label='MRNET')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['MRNET' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['MRNET' for _ in tpr]
     fpr, tpr, _, _ = tigress_roc(true_edgesfx, REVNET_FILES['tigress'])
     plt.plot(fpr, tpr, color=plt_colors[8], label='TIGRESS')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['TIGRESS' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['TIGRESS' for _ in tpr]
     fpr, tpr, _, _ = tinge_roc(true_edgesfx, REVNET_FILES['tinge'], net_genes)
     plt.plot(fpr, tpr, color=plt_colors[9], label='TINGe')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['TINGe' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['TINGe' for _ in tpr]
     fpr, tpr, _, _ = pcc_roc(true_edgesfx, REVNET_FILES['pcc'])
     plt.plot(fpr, tpr, color=plt_colors[10], label='PCC')
-    fpr_full = fpr_full + [x for x in fpr] 
-    tpr_full = tpr_full + [x for x in tpr] 
-    method_full = method_full + ['PCC' for _ in tpr] 
+    fpr_full = fpr_full + [x for x in fpr]
+    tpr_full = tpr_full + [x for x in tpr]
+    method_full = method_full + ['PCC' for _ in tpr]
     mdf = pd.DataFrame({"FPR": fpr_full, "TPR": tpr_full, "METHOD": method_full})
     mdf.to_csv("roc.full.2k.csv", index=False)
     # diagonal line
@@ -636,67 +636,67 @@ def plot_all_pr2k(true_edgesfx, net_genes, plt_colors):
     _, _, prec, recall = aracne_roc(true_edgesfx, REVNET_FILES['aracne'], net_genes)
     plt.plot(prec, recall, color=plt_colors[0], label='ARACNE-AP')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['ARACNE-AP' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['ARACNE-AP' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = clr_roc(true_edgesfx, REVNET_FILES['clr'], net_genes)
     plt.plot(prec, recall, color=plt_colors[1], label='CLR')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['CLR' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['CLR' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = fastggm_roc(true_edgesfx, REVNET_FILES['fastggm'], net_genes)
     plt.plot(prec, recall, color=plt_colors[2], label='FastGGM')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['FastGGM' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['FastGGM' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = genenet_roc(true_edgesfx, REVNET_FILES['genenet'])
     plt.plot(prec, recall, color=plt_colors[3], label='GeneNet')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['GeneNet' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['GeneNet' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = genie3_roc(true_edgesfx, REVNET_FILES['genie3'], net_genes)
     plt.plot(prec, recall, color=plt_colors[4], label='GENIE3')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['GENIE3' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['GENIE3' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = grnboost_roc(true_edgesfx, REVNET_FILES['grnboost'], net_genes)
     plt.plot(prec, recall, color=plt_colors[5], label='GRNBoost')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['GRNBoost' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['GRNBoost' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = inferlator_roc(true_edgesfx, REVNET_FILES['inferlator'], net_genes)
     plt.plot(prec, recall, color=plt_colors[6], label='Inferelator')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['Inferelator' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['Inferelator' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = mrnet_roc(true_edgesfx, REVNET_FILES['mrnet'])
     plt.plot(prec, recall, color=plt_colors[7], label='MRNET')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['MRNET' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['MRNET' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = tigress_roc(true_edgesfx, REVNET_FILES['tigress'])
     plt.plot(prec, recall, color=plt_colors[8], label='TIGRESS')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['TIGRESS' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['TIGRESS' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = tinge_roc(true_edgesfx, REVNET_FILES['tinge'], net_genes)
     plt.plot(prec, recall, color=plt_colors[9], label='TINGe')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
-    method_full = method_full + ['TINGe' for _ in prec] 
+    recall_full = recall_full + [x for x in recall]
+    method_full = method_full + ['TINGe' for _ in prec]
     print(len(prec), len(prec_full))
     _, _, prec, recall = pcc_roc(true_edgesfx, REVNET_FILES['pcc'])
     plt.plot(prec, recall, color=plt_colors[10], label='PCC')
     prec_full = prec_full + [x for x in prec]
-    recall_full = recall_full + [x for x in recall] 
+    recall_full = recall_full + [x for x in recall]
     method_full = method_full + ['PCC' for _ in prec]
     print(len(prec), len(prec_full))
     mdf = pd.DataFrame({"PRECISION": prec_full, "RECALL": recall_full, "METHOD": method_full})
@@ -715,8 +715,8 @@ def main(out_format, split_sub):
     true_complete_file = TRUE_NET
     net_genes = []
     plt_colors = PLOT_COLORS
-    with open(true_complete_file) as f:
-        line = f.readline().replace('"', '')
+    with open(true_complete_file) as ifx:
+        line = ifx.readline().replace('"', '')
         net_genes = line.split()
     matplotlib.style.use('seaborn-muted')
     if split_sub == 'split':
