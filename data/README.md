@@ -14,6 +14,8 @@ ref_yeast
 
 Contains the reference Yeast regulatory network of the simulated dataset.
 
+From https://bioconductor.riken.jp/packages/3.5/bioc/html/netbenchmark.html
+
 sim_toy
 -------
 

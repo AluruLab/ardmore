@@ -1,6 +1,24 @@
-Oct 15
+Evaluation of GRN methods with Simulated Datasets
+=================================================
 
-Signed network parsing error - using unsigned network
-Parameters used - steady state ODE and SDE. SDE - 0.05 noise constant. Noise after simulation - model used in DREAM4. Normalise at the end
+This repository contains the source code for containers, scripts for running 
+and evaluating GRNs using 15 different methods.
 
-Genie3 parameters - default - 1000 tree random forest
+
+The following are the contents of this repository:
+
+data folder
+-----
+ - Reference networks.
+
+containers folder
+----
+ - Dockerfiles for building containers for GRN methods.
+
+scripts folder
+----
+  - Utility scripts to run the respective GRN construction software.
+
+eval folder
+----
+ - Python scripts for evaluating and collating GRN nets.
