@@ -1,0 +1,14 @@
+containers/grnboost/gnwn2000X2000
+containers/grnboost/gnwn2000X250
+containers/grnboost/grnboost-net-small.report.txt
+containers/grnboost/grnboost-net-small.result.tsv
+containers/grnboost/grnboost-net.report.txt
+containers/grnboost/grnboost-net.result.tsv
+containers/grnboost/grnboost.log
+im_grnboost.sif
+im_wgcna.sif
+runs/grnboost/data/
+runs/grnboost/logs/
+runs/grnboost/output/
+runs/wgcna/data/
+*.log
