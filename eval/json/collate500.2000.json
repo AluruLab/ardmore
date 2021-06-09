@@ -1,0 +1,20 @@
+{
+    "OUT_FILE": "yeast-edges-weights-500.2000.csv",
+    "DATA_DIR": "../data/revnet/",
+    "TRUE_NET": "../data/ref_yeast//gnw500_trunet",
+    "REVNET_FILES": {
+        "aracne": "aracne/500.2000-2019.05.16-10.08.11/bootstrapNetwork_ul3atth75o35ngtur8ibskqq7s.txt",
+        "clr": "clr/500.2000-2019.05.05-13.42.13",
+        "fastggm": "fastggm/500.2000-2019.05.03-18.24.32",
+        "genenet": "genenet/500.2000-2019.05.15-15.46.18",
+        "genie3": "genie3/500.2000-2019.05.06-10.22.03",
+        "grnboost": "grnboost/500.2000-2019.05.14-16.31.46.result.tsv",
+        "inferelator": "inferlator/500.2000-2019.05.16-16.16.07/summary_frac_tp_0_perm_1--frac_fp_0_perm_1_1.tsv",
+        "irafnet": "irafnet/500.2000-2019.05.25-15.35.07",
+        "mrnet": "mrnet/500.2000-2019.05.05-17.55.53",
+        "pcc": "pearson/500.2000-2019.05.03-17.32.58",
+        "tigress": "tigress/500.2000-2019.05.06-10.19.21",
+        "tinge": "tinge/500.2000.weight.eda",
+        "wgcna": "wgcna/500.2000-2019.05.03-18.07.01"
+    }
+}

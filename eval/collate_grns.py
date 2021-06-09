@@ -1,4 +1,4 @@
-
+import sys
 import json
 import pandas as pd
 import numpy as np
@@ -481,12 +481,12 @@ ROCPR_METHOD_DICT = {
     "fastggm" : fastggm_preds
 }
 
-def mk_table(jsx_data):
+def collate_grn_nets(jsx):
     true_complete_file = jsx["TRUE_NET"]
     net_genes = []
     with open(true_complete_file) as ifx:
         line = ifx.readline().replace("\"", "")
-        net_genes = line.split()
+        net_genes = line.strip().split()
     all_method_pred = {}
     enames = get_edge_names2(true_complete_file, net_genes)
     all_method_pred["edge"] = enames
@@ -506,7 +506,12 @@ def mk_table(jsx_data):
     dfx.to_csv(jsx["OUT_FILE"], index=False)
 
 if __name__ == "__main__":
-    input_json_file = sys.argv[1]
-    with open(input_json_file) as f:
-          jsx_data = json.load(f)
-    mk_table(jsx_data)
+    if len(sys.argv) < 2:
+        print("  Usage: collate_grns.py <INPUT_JSON>")
+        print("   <INPUT_JSON> Input configuration with paths to generated networks")
+        print("   See collate2k.json for an example")
+    else:
+        input_json_file = sys.argv[1]
+        with open(input_json_file) as f:
+            jsx_data = json.load(f)
+        collate_grn_nets(jsx_data)
