@@ -30,7 +30,7 @@ echo "TFList : $tflist"
 /usr/bin/time -f "$ngenes $nexpts %e %S %P" singularity run $PWD/grnboost/im_grnboost.sif /usr/local/bin/spark/bin/spark-submit \
      --class org.aertslab.grnboost.GRNBoost \
      --driver-memory 32g \
-     --executor-memory 8g \
+     --executor-memory 12g \
      --master local[64] \
      --deploy-mode client \
      --jars /m2/repo/ml/dmlc/xgboost4j/0.83-SNAPSHOT/xgboost4j-0.83-SNAPSHOT.jar \
@@ -41,5 +41,5 @@ echo "TFList : $tflist"
      -o $PWD/grnboost/output/${ngenes}X${nexpts}-${currenttime} \
      -p eta=0.01 \
      -p max_depth=3 \
-     -p colsample_bytree=0.1 \
-     --truncate 100000
+     -p colsample_bytree=0.1  \
+     --truncate 500000
