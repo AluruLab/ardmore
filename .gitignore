@@ -1,3 +1,5 @@
+papers/
+data/reg_ecoli/
 containers/grnboost/gnwn2000X2000
 containers/grnboost/gnwn2000X250
 containers/grnboost/grnboost-net-small.report.txt
@@ -12,3 +14,9 @@ runs/grnboost/logs/
 runs/grnboost/output/
 runs/wgcna/data/
 *.log
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+*.R
