@@ -1,0 +1,4 @@
+containers/data/yeast/gnwn2000X1750 filter=lfs diff=lfs merge=lfs -text
+containers/grnboost/exp-data-2k.tsvcontainers/grnboost/exp-data-2k.tsv filter=lfs diff=lfs merge=lfs -text
+containers/data/yeast/gnwn1750X2000 filter=lfs diff=lfs merge=lfs -text
+containers/data/yeast/gnwn2000X2000 filter=lfs diff=lfs merge=lfs -text
